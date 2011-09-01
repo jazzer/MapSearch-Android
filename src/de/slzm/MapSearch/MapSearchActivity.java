@@ -28,14 +28,18 @@ public class MapSearchActivity extends Activity {
 		readTownsFromRawTextFile(this, R.raw.germanycoords);
 	}
 
-	public static void readTownsFromRawTextFile(Context ctx, int resId) {
+	public void readTownsFromRawTextFile(Context ctx, int resId) {
 		try {
 			InputStream inputStream = ctx.getResources().openRawResource(resId);
 			InputStreamReader streamReader = new InputStreamReader(inputStream);
 			BufferedReader reader = new BufferedReader(streamReader);
 			String line;
 			while ((line = reader.readLine()) != null) {
-				
+				String[] splitted = line.split(":");
+				townsList
+						.add(new Town(splitted[0], Float
+								.parseFloat(splitted[1]), Float
+								.parseFloat(splitted[2])));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
