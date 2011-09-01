@@ -1,8 +1,11 @@
 package de.slzm.MapSearch;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -58,5 +61,9 @@ public class MapLayout extends FrameLayout {
 		return true;
 	}
 	
+	
+
+	
+
 	
 }
