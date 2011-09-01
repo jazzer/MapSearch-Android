@@ -19,9 +19,9 @@ public final class R {
         public static final int buttonexit=0x7f060006;
         public static final int buttonnexttown=0x7f060004;
         public static final int buttonstart=0x7f060005;
-        public static final int map=0x7f060002;
         public static final int maplayout=0x7f060001;
         public static final int marker=0x7f060003;
+        public static final int paintview=0x7f060002;
         public static final int textviewtown=0x7f060000;
     }
     public static final class layout {

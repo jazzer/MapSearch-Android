@@ -8,14 +8,17 @@
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/maplayout">
 
-		<ImageView android:layout_width="wrap_content"
+
+		<de.slzm.MapSearch.PaintView
+			android:background="#FF0000" android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:src="@drawable/germany"
-			android:id="@+id/map" />
+			android:id="@+id/paintview" />
+
 		<ImageView android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:src="@drawable/marker"
 			android:id="@+id/marker" />
 
 	</de.slzm.MapSearch.MapLayout>
-	<Button android:layout_width="wrap_content" android:background="#0000FF"
-		android:layout_height="wrap_content" android:id="@+id/buttonnexttown"  />
+	<Button android:text="Next" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:id="@+id/buttonnexttown" />
 </LinearLayout>

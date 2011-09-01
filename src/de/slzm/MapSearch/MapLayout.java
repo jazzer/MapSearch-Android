@@ -1,8 +1,17 @@
 package de.slzm.MapSearch;
 
+import java.util.List;
+
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -10,10 +19,10 @@ import android.widget.TextView;
 
 public class MapLayout extends FrameLayout {
 
-	private ImageView map;
 	private ImageView marker;
 	private TextView textviewTown;
 	private Button buttonNextTown;
+	private PaintView paintView;
 
 	private static final int X_DIFF = -10;
 	private static final int Y_DIFF = -80;
@@ -22,11 +31,14 @@ public class MapLayout extends FrameLayout {
 	private static final float LONGITUDE_LEFT_TOP = 5.203857f;
 	private static final float LATITUDE_RIGHT_BOTTOM = 47.219568f;
 	private static final float LONGITUDE_RIGHT_BOTTOM = 15.421142f;		
-	private static final float GPS_HEIGHT = LATITUDE_RIGHT_BOTTOM - LATITUDE_LEFT_TOP;
+	private static final float GPS_HEIGHT = LATITUDE_LEFT_TOP - LATITUDE_RIGHT_BOTTOM;
 	private static final float GPS_WIDTH = LONGITUDE_RIGHT_BOTTOM - LONGITUDE_LEFT_TOP;
 	
 	private int map_height;
 	private int map_width;
+	
+	private int townIndex = -1;
+	private List<Town> townsList;
 	
 	public MapLayout(Context context) {
 		super(context);
@@ -40,20 +52,36 @@ public class MapLayout extends FrameLayout {
 		super(context, attrs, defStyle);
 	}
 	
-	public void init() {
-		map = (ImageView) findViewById(R.id.map);
-		marker = (ImageView) findViewById(R.id.marker);
-		textviewTown = (TextView) findViewById(R.id.textviewtown);
-		buttonNextTown = (Button) findViewById(R.id.buttonnexttown);
+	public void init(final List<Town> townsList, Context context) {
 		
-		map_height = map.getHeight();
-		map_width = map.getWidth();
+		this.townsList = townsList;
+		
+		marker = (ImageView) ((Activity) context).findViewById(R.id.marker);
+		textviewTown = (TextView) ((Activity) context).findViewById(R.id.textviewtown);
+		buttonNextTown = (Button) ((Activity) context).findViewById(R.id.buttonnexttown);
+		paintView = (PaintView) ((Activity) context).findViewById(R.id.paintview);
+		
+		buttonNextTown.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				map_height = paintView.getMeasuredHeight();
+				map_width = paintView.getMeasuredWidth();
+				townIndex++;
+				Town town = townsList.get(townIndex);
+				textviewTown.setText(town.getName());
+				int[] townPos = getPos(town.getLatitude(), town.getLongitude());
+				paintView.setPosToDraw(townPos);
+			}
+		});
+		
+		setWillNotDraw(false);
 	}
 
 	private int[] getPos(float latitude, float longitude) {
 		int[] resPos = new int[2];
 		
-		float relativeY = (latitude - LATITUDE_LEFT_TOP)/GPS_HEIGHT;
+		float relativeY = (LATITUDE_LEFT_TOP - latitude)/GPS_HEIGHT;
 		float relativeX = (longitude - LONGITUDE_LEFT_TOP)/GPS_WIDTH;
 		
 		resPos[0] = (int) (relativeX * map_width);

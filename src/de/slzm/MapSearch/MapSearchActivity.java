@@ -24,8 +24,8 @@ public class MapSearchActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		map = (MapLayout) findViewById(R.id.maplayout);
-		map.init();
 		readTownsFromRawTextFile(this, R.raw.germanycoords);
+		map.init(townsList, this);
 	}
 
 	public void readTownsFromRawTextFile(Context ctx, int resId) {
@@ -35,7 +35,7 @@ public class MapSearchActivity extends Activity {
 			BufferedReader reader = new BufferedReader(streamReader);
 			String line;
 			while ((line = reader.readLine()) != null) {
-				String[] splitted = line.split(":");
+				String[] splitted = line.split(",");
 				townsList
 						.add(new Town(splitted[0], Float
 								.parseFloat(splitted[1]), Float
