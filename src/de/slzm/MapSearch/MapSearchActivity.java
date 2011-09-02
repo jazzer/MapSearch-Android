@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
@@ -25,6 +26,7 @@ public class MapSearchActivity extends Activity {
 		setContentView(R.layout.main);
 		map = (MapLayout) findViewById(R.id.maplayout);
 		readTownsFromRawTextFile(this, R.raw.germanycoords);
+		Collections.shuffle(townsList);
 		map.init(townsList, this);
 	}
 
