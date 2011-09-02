@@ -12,6 +12,7 @@ import android.graphics.Paint.Style;
 import android.location.GpsStatus;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -52,6 +53,7 @@ public class MapLayout extends FrameLayout {
 	private List<Town> townsList;
 	private int[] townPos;
 
+	private Toast toast;
 	private Context context;
 
 	public MapLayout(Context context) {
@@ -71,6 +73,9 @@ public class MapLayout extends FrameLayout {
 		this.context = context;
 		this.townsList = townsList;
 
+		toast = Toast.makeText(context, "", Toast.LENGTH_SHORT);
+		toast.setGravity(Gravity.CENTER, 0, 0);
+		
 		marker = (ImageView) ((Activity) context).findViewById(R.id.marker);
 		textviewTown = (TextView) ((Activity) context)
 				.findViewById(R.id.textviewtown);
@@ -83,13 +88,13 @@ public class MapLayout extends FrameLayout {
 
 			@Override
 			public void onClick(View v) {
-				
+
 				map_height = paintView.getMeasuredHeight();
 				map_width = paintView.getMeasuredWidth();
 				map_diag = Math.sqrt(Math.pow(map_height, 2)
 						+ Math.pow(map_width, 2));
 				dist_per_pixel = FULL_DIST_KM / map_diag;
-				
+
 				setResult();
 				nextTown();
 			}
@@ -97,9 +102,9 @@ public class MapLayout extends FrameLayout {
 
 		setWillNotDraw(false);
 	}
-	
+
 	private void nextTown() {
-		townIndex++;
+		townIndex = (++townIndex % townsList.size());
 		Town town = townsList.get(townIndex);
 		textviewTown.setText(town.getName());
 		townPos = getPos(town.getLatitude(), town.getLongitude());
@@ -109,10 +114,11 @@ public class MapLayout extends FrameLayout {
 		if (townIndex > -1) {
 			paintView.setPosToDraw(townPos);
 			double dist = getDistanceFromTown();
-			Toast toast = Toast.makeText(context, String.format(
-					"%.0f km von %s entfernt.", dist, townsList.get(townIndex)
-							.getName()), Toast.LENGTH_LONG);
+			toast.cancel();
+			toast.setText(String.format("%.0f km von %s entfernt.\nNächste Stadt ist: %s", dist,
+					townsList.get(townIndex).getName(), townsList.get((townIndex+1)%townsList.size()).getName()));
 			toast.show();
+
 		}
 	}
 
@@ -142,7 +148,7 @@ public class MapLayout extends FrameLayout {
 		// Log.d("xy", (int) event.getX() + " " + (int) event.getY());
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
-//		case MotionEvent.ACTION_MOVE:
+			// case MotionEvent.ACTION_MOVE:
 			paddingX = (int) event.getX() - X_DIFF;
 			paddingY = (int) event.getY() - Y_DIFF;
 			marker.setPadding(paddingX, paddingY, 0, 0);
