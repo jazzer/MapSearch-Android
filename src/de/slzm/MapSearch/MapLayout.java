@@ -1,17 +1,10 @@
 package de.slzm.MapSearch;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Paint.Style;
-import android.location.GpsStatus;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -75,6 +68,7 @@ public class MapLayout extends FrameLayout {
 
 		toast = Toast.makeText(context, "", Toast.LENGTH_SHORT);
 		toast.setGravity(Gravity.CENTER, 0, 0);
+		toast.setDuration(100);
 		
 		marker = (ImageView) ((Activity) context).findViewById(R.id.marker);
 		textviewTown = (TextView) ((Activity) context)
@@ -86,7 +80,6 @@ public class MapLayout extends FrameLayout {
 
 		buttonNextTown.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 
 				map_height = paintView.getMeasuredHeight();

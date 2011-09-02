@@ -20,7 +20,6 @@ public class MainMenu extends Activity {
 		buttonExit = (Button) findViewById(R.id.buttonexit);
 		
 		buttonStart.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(MainMenu.this, MapSearchActivity.class);
 				startActivity(i);
